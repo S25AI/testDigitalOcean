@@ -12,6 +12,8 @@ import {
   LOGIN_AUTH_DISCONNECT
 } from '../constants/loginConstants';
 
+import {API_REQUEST_AUTH, API_REQUEST_COOKIE_CHECK} from '../constants/API';
+
 export const changeLoginField = (val) => ({
   type: LOGIN_CHANGE_LOGIN,
   payload: val
@@ -34,7 +36,7 @@ export const disconnectAuth = () => {
 
 export const checkCookie = (login) => (dispatch) => {
   dispatch(connectAuth(login));
-  axios.post('http://localhost:9002/api/cookieCheck', {login})
+  axios.post(API_REQUEST_COOKIE_CHECK, {login})
     .then(response => {
       if (response.data && response.data.message !== 'authorized') {
         dispatch(disconnectAuth());
@@ -52,7 +54,7 @@ export const handleFormSubmit = (e) => {
 
   return (dispatch) => {
     dispatch({type: LOGIN_DATA_REQUEST});
-    axios.post('http://localhost:9002/api/auth', {login, password}, {withCredentials: true})
+    axios.post(API_REQUEST_AUTH, {login, password}, {withCredentials: true})
       .then(response => {
         console.log('response is ', response.data);
         dispatch({

@@ -4,11 +4,13 @@ import {
   SOCKET_MESSAGES_ERROR
 } from '../constants/socketConstants';
 
+import {API_REQUEST_CHAT_MESSAGES} from '../constants/API';
+
 import axios from 'axios';
 
 export const getChatMessages = () => (dispatch) => {
   dispatch({type: SOCKET_MESSAGES_REQUEST});
-  axios.get('http://localhost:9002/api/chatMessages')
+  axios.get(API_REQUEST_CHAT_MESSAGES)
     .then(response => {
       console.log('data is ', response.data);
       dispatch({
