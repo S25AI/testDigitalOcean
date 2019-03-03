@@ -17,6 +17,7 @@ import axios from 'axios';
 
 export const sendCreateArticleRequest = (data) => {
   let {authUserLogin: author} = store.getState().loginReducer;
+  console.log('author is ', author);
   return (dispatch) => {
     dispatch({type: CREATE_ARTICLE_REQUEST});
     axios.post(API_REQUEST_CREATE_ARTICLE, {...data, author})

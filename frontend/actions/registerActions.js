@@ -37,7 +37,7 @@ export const handleFormSubmit = (e) => {
           type: REGISTER_DATA_SUCCESS,
           payload: response.data
         });
-        dispatch({type: LOGIN_AUTH_CONNECT});
+        dispatch({type: LOGIN_AUTH_CONNECT, payload: response.data.login});
       })
       .catch(err => {
         console.log('err is ', err);
