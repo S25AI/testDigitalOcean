@@ -56,4 +56,4 @@ class Socket {
   }
 }
 
-export default new Socket(NODE_ENV === 'production' ? 'ws://dsilvestrov.ru:8282' : 'ws://localhost:8282');
+export default new Socket(NODE_ENV === 'production' ? 'ws://dsilvestrov.ru:8282/websocket' : 'ws://localhost:8282');
