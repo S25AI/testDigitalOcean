@@ -8,6 +8,8 @@ import {
   CREATE_ARTICLE_HIDE_ERROR_MESSAGE
 } from '../constants/createArticleConstants';
 
+import {API_REQUEST_CREATE_ARTICLE} from '../constants/API';
+
 const TIME_TO_SHOW = 5000;
 
 import store from '../store';
@@ -17,7 +19,7 @@ export const sendCreateArticleRequest = (data) => {
   let {authUserLogin: author} = store.getState().loginReducer;
   return (dispatch) => {
     dispatch({type: CREATE_ARTICLE_REQUEST});
-    axios.post('http://localhost:9002/api/createArticle', {...data, author})
+    axios.post(API_REQUEST_CREATE_ARTICLE, {...data, author})
       .then(response => {
         dispatch({
           type: CREATE_ARTICLE_SUCCESS,

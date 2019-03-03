@@ -10,6 +10,7 @@ import {
 } from '../constants/registerConstants';
 
 import {LOGIN_AUTH_CONNECT} from '../constants/loginConstants';
+import {API_REQUEST_REGISTER} from '../constants/API';
 
 export const changeLoginField = (val) => ({
   type: REGISTER_CHANGE_LOGIN,
@@ -30,7 +31,7 @@ export const handleFormSubmit = (e) => {
 
   return (dispatch) => {
     dispatch({type: REGISTER_DATA_REQUEST});
-    axios.post('http://localhost:9002/api/register', {login, password}, {withCredentials: true})
+    axios.post(API_REQUEST_REGISTER, {login, password}, {withCredentials: true})
       .then(response => {
         dispatch({
           type: REGISTER_DATA_SUCCESS,
