@@ -45,7 +45,7 @@ module.exports = (app) => {
         });
       })
       .catch(err => {
-        console.log('err is ', err);
+        console.log('in api/register: err is ', err);
         next(err);
       });
   });
@@ -55,7 +55,7 @@ module.exports = (app) => {
 
     findUser(login)
       .then(userData => {
-        if (!userData || userData.password !== password) {
+        if (!userData || !userData.checkPassword(password)) {
           res.status(400).send({
             message: 'login or password incorrect',
             status: 400
