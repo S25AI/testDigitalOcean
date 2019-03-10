@@ -19,10 +19,10 @@ class StartPage extends React.Component {
       loading
     } = this.props;
 
-    return <>
+    return <div className='wrapper'>
       <LoginPage /><br /><br />
       {loading ? <span>...loading</span> : <ArticlesList items={articles} />}
-    </>
+    </div>
   }
 }
 

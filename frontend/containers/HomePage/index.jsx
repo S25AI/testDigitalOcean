@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import Input from '../../components/Input';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import Socket from '../../core/socket';
-import {getChatMessages} from '../../actions/socketActions';
+import { getChatMessages } from '../../actions/socketActions';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 
@@ -15,12 +15,12 @@ class Home extends Component {
   }
 
   _onChange = (inputValue) => {
-    this.setState({inputValue});
+    this.setState({ inputValue });
   }
 
   _handleSubmit = (e) => {
-    let {inputValue} = this.state;
-    let {userLogin} = this.props;
+    let { inputValue } = this.state;
+    let { userLogin } = this.props;
     e.preventDefault();
 
     Socket.sendMessage({
@@ -28,7 +28,7 @@ class Home extends Component {
       message: inputValue
     });
 
-    this.setState({inputValue: ''});
+    this.setState({ inputValue: '' });
   }
 
   componentDidMount() {
@@ -45,7 +45,7 @@ class Home extends Component {
     } = this.props;
 
     return (
-      <>
+      <div className='wrapper'>
         <h1>Hello, {userLogin}</h1>
 
         <Link to='create-article'>Перейти на страницу созданиия статей</Link>
@@ -54,26 +54,27 @@ class Home extends Component {
           <Input value={inputValue} onChange={this._onChange} />
           <Input type='submit' value='submit' />
         </form>
-    
+
         {
           commentsLoading ? (
             <div>...comments loading</div>
           ) : (
-            <ul>
-              {
-                comments.map(({userLogin, message, date}, index) => (
-                  <li key={index.toString()}><b>{userLogin}: </b>{message}: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</li>
-                ))
-              }
-            </ul>
-          )
+              <ul>
+                {
+                  comments.map(({ userLogin, message, date }, index) => (
+                    <li key={index.toString()}><b>{userLogin}: </b>{message}: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</li>
+                  ))
+                }
+              </ul>
+            )
         }
-      </>
+      </div>
+
     );
   }
 }
 
-const mapStateToProps = ({loginReducer, socketReducer}) => ({
+const mapStateToProps = ({ loginReducer, socketReducer }) => ({
   userLogin: loginReducer.authUserLogin,
   comments: socketReducer.comments,
   commentsLoading: socketReducer.commentsLoading
