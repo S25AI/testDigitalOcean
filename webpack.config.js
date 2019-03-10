@@ -3,12 +3,13 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const env = process.env.NODE_ENV ? "production" : "development";
+const dev = process.env.NODE_ENV !== 'production';
 
 const developmentConfig = {
-  devtool: env === "development" ? 'cheap-module-eval-source-map' : false,
-  mode: env,
+  devtool: dev ? 'cheap-module-eval-source-map' : false,
+  mode: dev ? 'development' : 'production',
   context: path.resolve(__dirname, 'frontend'),
   entry: './app',
   output: {
@@ -29,13 +30,24 @@ const developmentConfig = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-proposal-class-properties']
+        use: [
+          {loader: 'babel-loader'},
+          {
+            loader: 'linaria/loader',
+            options: {sourceMap: dev}
           }
-        }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'css-hot-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {sourceMap: dev}
+          }
+        ]
       }
     ]
   },
@@ -45,6 +57,7 @@ const developmentConfig = {
       NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.NoEmitOnErrorsPlugin(),
+    new MiniCssExtractPlugin({filename: 'styles.css'}),
     new HtmlWebpackPlugin({template: 'index.html'})
   ],
 
