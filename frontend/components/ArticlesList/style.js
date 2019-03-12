@@ -22,6 +22,7 @@ export const articlesListItem = css`
   height: 330px;
   border: 1px solid ${colors.gray};
   border-radius: 4px;
+  position: relative;
   padding: ${sizes.grid * 2}px ${sizes.grid}px;
   overflow: hidden;
 
@@ -62,4 +63,22 @@ export const articleBody = css`
   font-size: 16px;
   margin-top: 16px;
   line-height: 1.4;
+`;
+
+export const articleCategory = css`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  border-radius: 25px;
+  color: ${colors.white};
+  background: ${colors.category};
+`;
+
+export const articleCreator = css`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 12px;
+  color: ${colors.primary};
 `;

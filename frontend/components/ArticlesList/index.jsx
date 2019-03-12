@@ -7,7 +7,9 @@ import {
   articlesListItem,
   articleTitle,
   articleDescr,
-  articleBody
+  articleBody,
+  articleCategory,
+  articleCreator
 } from './style';
 
 function ArticlesList({items}) {
@@ -18,12 +20,12 @@ function ArticlesList({items}) {
       {
         items.map(({title, descr, body, category, date, login}, index) => (
           <li className={articlesListItem} key={index.toString()}>
-            <div className={articleTitle}>article title is : {title}</div>
-            <div className={articleDescr}>article description is: {descr}</div>
-            <div className={articleBody}>article body is : {body}</div>
-            <div>article category is : {category}</div>
-            <div>created at: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</div>
-            <div>created by: {login}</div>
+            <div className={articleTitle}>{title}</div>
+            <div className={articleDescr}>{descr}</div>
+            <div className={articleBody}>{body}</div>
+            <div className={articleCategory}>{category}</div>
+            {/* <div>created at: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</div> */}
+            <div className={articleCreator}>created by {login}</div>
             <br />
           </li>
         ))
