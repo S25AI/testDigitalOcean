@@ -17,7 +17,8 @@ export const globals = css`
   
     body {
       font: 1.6rem/1 Arial, Tahoma, sans-serif;
-      color: #232122
+      color: #232122;
+      margin: 0;
     }
 
     h1 {
@@ -31,6 +32,12 @@ export const globals = css`
     ul {
       list-style-type: none;
       padding: 0;
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
     }
 
     .wrapper {

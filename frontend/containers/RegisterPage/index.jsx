@@ -7,6 +7,7 @@ import {
 } from '../../actions/registerActions';
 
 import Input from '../../components/Input';
+import {authFormContainer, inputWrapper} from '../LoginPage/style';
 
 const RegisterPage = ({
   login,
@@ -16,20 +17,28 @@ const RegisterPage = ({
   handleSubmit,
   loading
 }) => (
-  <>
+  <div className='wrapper'>
     <h1>Страница регистрации</h1>
     {
       loading ? (
         <div>...loading</div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <Input value={login} onChange={changeLogin} placeholder='Enter your login' />
-          <Input value={password} onChange={changePass} type='password' placeholder='Enter your password' />
-          <Input value='submit' type='submit' />
+          <div className={authFormContainer}>
+            <div className={inputWrapper}>
+              <Input value={login} onChange={changeLogin} placeholder='Enter your login' />
+            </div>
+            <div className={inputWrapper}>
+              <Input value={password} type='password' onChange={changePass} placeholder='Enter your password' />
+            </div>
+            <div className={inputWrapper}>
+              <Input value='submit' type='submit' />
+            </div>
+          </div>
         </form>
       )
     }
-  </>
+  </div>
 );
 
 const mapStateToProps = ({registerReducer, jobsTestReducer}) => !console.log(jobsTestReducer) && ({

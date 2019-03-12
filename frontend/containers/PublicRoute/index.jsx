@@ -11,11 +11,6 @@ export default connect(({loginReducer: {isAuth}}) => ({isAuth}))(
  ({component: Component, isAuth, ...rest}) => (
    <>
       <PageHeader items={headerItems} />
-      <ul>
-        <li><Link to='/register'>to register page</Link></li>
-        <li><Link to='/'>to login page</Link></li>
-      </ul>
-
       <Route {...rest}
         render={props => (
           !isAuth ? (
