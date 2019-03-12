@@ -4,6 +4,15 @@ import LoginPage from '../LoginPage';
 import ArticlesList from '../../components/ArticlesList';
 import {fetchAllArticles} from '../../actions/articlesActions';
 
+import {css} from 'linaria';
+import {sizes} from '../../constants/styles/common';
+
+const delimiter = css`
+  height: 1px;
+  background: #ccc;
+  margin: ${sizes.grid * 6}px 0;
+`;
+
 class StartPage extends React.Component {
   constructor(props) {
     super(props);
@@ -20,7 +29,8 @@ class StartPage extends React.Component {
     } = this.props;
 
     return <div className='wrapper'>
-      <LoginPage /><br /><br />
+      <LoginPage />
+      <div className={delimiter} />
       {loading ? <span>...loading</span> : <ArticlesList items={articles} />}
     </div>
   }

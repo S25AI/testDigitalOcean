@@ -7,6 +7,7 @@ import {
 } from '../../actions/loginActions';
 
 import Input from '../../components/Input';
+import {authFormContainer, inputWrapper} from './style.js';
 
 const LoginPage = ({
   login,
@@ -23,16 +24,23 @@ const LoginPage = ({
       <h1>Страница авторизации</h1>
       {
         loading ? (
-          <div>...loading</div>
+          <div style={{height: '306px'}}>...loading</div>
         ) : (
           <form onSubmit={handleSubmit}>
-          <Input value={login} onChange={changeLogin} placeholder='Enter your login' />
-          <Input value={password} type='password' onChange={changePass} placeholder='Enter your password' />
-          <Input value='submit' type='submit' />
-          <br />
-          {message && <span>{message}</span>}
-          {error && error.message && <span>{error.message}</span>}
-        </form>
+            <div className={authFormContainer}>
+              <div className={inputWrapper}>
+                <Input value={login} onChange={changeLogin} placeholder='Enter your login' />
+              </div>
+              <div className={inputWrapper}>
+                <Input value={password} type='password' onChange={changePass} placeholder='Enter your password' />
+              </div>
+              <div className={inputWrapper}>
+                <Input value='submit' type='submit' />
+              </div>
+              {message && <span>{message}</span>}
+              {error && error.message && <span>{error.message}</span>}
+            </div>
+          </form>
         )
       }
     </>
