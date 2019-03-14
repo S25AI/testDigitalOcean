@@ -20,6 +20,7 @@ export const pageHeaderListItem = css`
 
   &:hover {
     color: ${colors.primaryHovered};
+    cursor: pointer;
   }
 
   & + & {

@@ -2,7 +2,7 @@ import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 import StartPage from '../StartPage';
 import RegisterPage from '../RegisterPage';
-import HomePage from '../HomePage';
+import {Home as HomePage} from '../HomePage';
 import PrivateRoute from '../../containers/PrivateRoute';
 import PublicRoute from '../../containers/PublicRoute';
 import CreateArticle from '../../containers/CreateArticle';

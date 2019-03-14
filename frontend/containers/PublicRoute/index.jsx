@@ -1,16 +1,14 @@
 import React from 'react';
 import { Route, Redirect, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {PageHeader} from '../../components/PageHeader';
-const headerItems = [
-  {url: '/register', text: 'to register page'},
-  {url: '/', text: 'to login page'}
-];
+import {PageHeader, PublicHeader} from '../../components/PageHeader';
 
 export default connect(({loginReducer: {isAuth}}) => ({isAuth}))(
  ({component: Component, isAuth, ...rest}) => (
    <>
-      <PageHeader items={headerItems} />
+      <PageHeader>
+        <PublicHeader />
+      </PageHeader>
       <Route {...rest}
         render={props => (
           !isAuth ? (
