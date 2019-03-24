@@ -4,23 +4,23 @@ const {UserModel} = require('./models/User');
 const {MessageModel} = require('./models/Message');
 const {ArticleModel} = require('./models/Article');
 
-exports.findUser = (login) => {
+exports.findUser = (username) => {
   return new Promise((resolve, reject) => {
-    UserModel.findOne({login}, (err, user) => {
+    UserModel.findOne({username}, (err, user) => {
       if (err) reject(err);
       resolve(user);
     });
   });
 };
 
-exports.saveUser = (user) => {
+exports.findUserById = (id) => {
   return new Promise((resolve, reject) => {
-    user.save((err) => {
+    UserModel.findById(id, (err, user) => {
       if (err) reject(err);
-      resolve('success');
-    });
+      resolve(user);
+    })
   });
-};
+}
 
 exports.saveMessage = (message) => {
   return new Promise((resolve, reject) => {

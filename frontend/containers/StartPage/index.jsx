@@ -19,7 +19,9 @@ class StartPage extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.articles.length) this.props.fetchArticles();
+    if (this.props.articles) {
+      if (!this.props.articles.length) this.props.fetchArticles();
+    }
   }
 
   render() {

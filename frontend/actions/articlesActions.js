@@ -4,10 +4,8 @@ import {
   ALL_ARTICLES_SUCCESS
 } from '../constants/articlesConstants';
 
-import axios from 'axios';
+import {instance as axios} from '../config/axiosConfig';
 import {API_REQUEST_FETCH_ARTICLES} from '../constants/API';
-
-console.log("NODE_ENV is ", NODE_ENV);
 
 export const fetchAllArticles = () => {
   return (dispatch) => {

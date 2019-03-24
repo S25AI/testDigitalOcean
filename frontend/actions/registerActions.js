@@ -31,19 +31,28 @@ export const handleFormSubmit = (e) => {
 
   return (dispatch) => {
     dispatch({type: REGISTER_DATA_REQUEST});
-    axios.post(API_REQUEST_REGISTER, {login, password}, {withCredentials: true})
+    axios.post(API_REQUEST_REGISTER, {username: login, password}, {withCredentials: true})
       .then(response => {
         dispatch({
           type: REGISTER_DATA_SUCCESS,
           payload: response.data
         });
-        dispatch({type: LOGIN_AUTH_CONNECT, payload: response.data.login});
+        dispatch({
+          type: LOGIN_AUTH_CONNECT,
+          payload: {
+            token: response.data.token,
+            login: response.data.username,
+            userId: response.data._id
+          }
+        });
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userId', response.data._id);
       })
       .catch(err => {
         console.log('err is ', err);
         dispatch({
           type: REGISTER_DATA_FAIL,
-          payload: err.response && err.response.data
+          payload: err.response && err.response.data 
         });
       });
   }

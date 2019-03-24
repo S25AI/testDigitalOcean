@@ -5,7 +5,8 @@ export const colors = {
   white: '#fff',
   category: '#0b8050',
   blue: 'rgba(3, 27, 78, 0.7)',
-  dark: '#000'
+  dark: '#000',
+  darkred: '#8b0000'
 };
 
 export const sizes = {

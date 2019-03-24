@@ -6,13 +6,12 @@ import {
 
 import {API_REQUEST_CHAT_MESSAGES} from '../constants/API';
 
-import axios from 'axios';
+import {authInstance as axios} from '../config/axiosConfig';
 
 export const getChatMessages = () => (dispatch) => {
   dispatch({type: SOCKET_MESSAGES_REQUEST});
   axios.get(API_REQUEST_CHAT_MESSAGES)
     .then(response => {
-      console.log('data is ', response.data);
       dispatch({
         type: SOCKET_MESSAGES_SUCCESS,
         payload: response.data
