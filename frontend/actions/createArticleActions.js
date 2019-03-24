@@ -13,11 +13,11 @@ import {API_REQUEST_CREATE_ARTICLE} from '../constants/API';
 const TIME_TO_SHOW = 5000;
 
 import store from '../store';
-import axios from 'axios';
+import {authInstance as axios} from '../config/axiosConfig';
 
 export const sendCreateArticleRequest = (data) => {
   let {authUserLogin: author} = store.getState().loginReducer;
-  console.log('author is ', author);
+
   return (dispatch) => {
     dispatch({type: CREATE_ARTICLE_REQUEST});
     axios.post(API_REQUEST_CREATE_ARTICLE, {...data, author})

@@ -13,6 +13,7 @@ import {
 } from './style';
 
 function ArticlesList({items}) {
+  if (!items) return null;
   return (
     <>
       <h2 className={title}>Список статей: </h2>

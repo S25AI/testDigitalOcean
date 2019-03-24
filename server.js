@@ -3,22 +3,29 @@
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const runMongo = require('./backend/db/connect');
 const handleApiRequests = require('./backend/routes');
+const {session: sessionConfig} = require('./backend/config');
 const PORT = 9002;
 
 const {saveMessage} = require('./backend/db/helpers');
 const {MessageModel} = require('./backend/db/models/Message');
+const {UserModel} = require('./backend/db/models/User');
+require('./backend/config/passport');
 
 runMongo();
 
-app.use(express.static('build'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(require('express-session')(sessionConfig));
+app.use(express.static('build'));
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
   res.setHeader('Access-Control-Allow-Method', 'POST');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });

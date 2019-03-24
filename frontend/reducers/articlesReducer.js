@@ -19,7 +19,7 @@ export default (state = initialState, action) => {
       return {...state, loading: false, data: action.payload.messages};
 
     case ALL_ARTICLES_FAIL:
-      return {...state, loading: false, error: action.payload};
+      return {...state, loading: false, data: [], error: action.payload};
 
     default:
       return state;

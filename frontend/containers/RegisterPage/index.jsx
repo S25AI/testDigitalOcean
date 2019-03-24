@@ -7,7 +7,12 @@ import {
 } from '../../actions/registerActions';
 
 import Input from '../../components/Input';
-import {authFormContainer, inputWrapper} from '../LoginPage/style';
+import {
+  authFormContainer,
+  inputWrapper
+} from '../LoginPage/style';
+
+import {errorMessage} from './style';
 
 const RegisterPage = ({
   login,
@@ -15,7 +20,8 @@ const RegisterPage = ({
   changeLogin,
   changePass,
   handleSubmit,
-  loading
+  loading,
+  error
 }) => (
   <div className='wrapper'>
     <h1>Страница регистрации</h1>
@@ -34,6 +40,7 @@ const RegisterPage = ({
             <div className={inputWrapper}>
               <Input value='submit' type='submit' />
             </div>
+            <div className={errorMessage}>{error && error.message}</div>
           </div>
         </form>
       )
@@ -41,10 +48,11 @@ const RegisterPage = ({
   </div>
 );
 
-const mapStateToProps = ({registerReducer, jobsTestReducer}) => !console.log(jobsTestReducer) && ({
+const mapStateToProps = ({registerReducer, jobsTestReducer}) => ({
   login: registerReducer.login,
   password: registerReducer.password,
-  loading: registerReducer.loading
+  loading: registerReducer.loading,
+  error: registerReducer.error
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,91 +1,94 @@
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const {UserModel} = require('../db/models/User');
+const passport = require('passport');
+const auth = require('./auth');
 const {ArticleModel} = require('../db/models/Article');
+
 const {
   findUser,
-  saveUser,
+  findUserById,
   saveArticle,
   findMessages,
   getArticles
 } = require('../db/helpers');
 
-const jsonParser = bodyParser.json();
-
 module.exports = (app) => {
-  app.post('/api/register', jsonParser, (req, res, next) => {
-    let { login, password } = req.body;
+  app.post('/api/register', auth.optional, (req, res, next) => {
+    const {username, password} = req.body;
 
-    if (login.length < 3 || password.length < 6) {
-      return res.status(400).send({
-        message: 'login or password not valid',
-        status: 400
-      });
+    if (!username) {
+      return res.status(422).json({message: 'username is required'});
     }
 
-    findUser(login)
-      .then(isLoginAlreadyExist => {
-        if (!!isLoginAlreadyExist) {
-          res.status(409).send({
-            message: 'user already exist',
-            status: 409
-          });
-          return;
-        }
-        return saveUser(new UserModel({login, password, _id: new mongoose.Types.ObjectId()}))
-      })
-      .then((response) => {
-        if (!response) return;
+    if (!password) {
+      return res.status(422).json({message: 'password is required'});
+    }
 
-        res.cookie('login', login, {maxAge: 86400000});
-        res.status(200).send({
-          message: 'You successfully registered',
-          login,
-          status: 200
-        });
+    const finalUser = new UserModel({
+      username,
+      password,
+      _id: new mongoose.Types.ObjectId()
+    });
+
+    finalUser.setPassword(password);
+
+    return finalUser.save()
+      .then(() => {
+        return res.json(finalUser.toAuthJSON());
       })
       .catch(err => {
-        console.log('in api/register: err is ', err);
-        next(err);
-      });
+        if (err.name === 'ValidationError') {
+          return res.status(422).json({message: err.message});
+        } else if (err.name === 'MongoError') {
+          return res.status(422).json({message: err.errmsg});
+        } else {
+          next(err);
+       }});
   });
 
-  app.post('/api/auth', jsonParser, (req, res, next) => {
-    let { login, password } = req.body;
+  app.post('/api/auth', auth.optional, (req, res, next) => {
+    const {username, password} = req.body;
+  
+    if (!username) {
+      return res.status(422).json({message: 'username is required'});
+    }
 
-    findUser(login)
-      .then(userData => {
-        if (!userData || !userData.checkPassword(password)) {
-          res.status(400).send({
-            message: 'login or password incorrect',
+    if (!password) {
+      return res.status(422).json({message: 'password is required'});
+    }
+  
+    return passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+      if (err) {
+        return next(err);
+      }
+  
+      if (passportUser) {
+        const finalUser = passportUser;
+        finalUser.token = passportUser.generateJWT();
+  
+        return res.json(finalUser.toAuthJSON());
+      }
+
+      return res.status(400).json({message: info});
+    })(req, res, next);
+  });
+
+  app.post('/api/userAuthCheck', auth.optional, (req, res, next) => {
+    let {userId} = req.body;
+
+    findUserById(userId)
+      .then((userInfo) => {
+        let login = userInfo.username;
+
+        if (login) {
+          res.json({login, status: 200});
+        } else {
+          res.status(400).json({
+            message: 'notAuthorized',
+            login: null,
             status: 400
           });
-          return;
         }
-
-        res.cookie('login', login, {maxAge: 86400000});
-        res.status(200).send({
-          message: 'success',
-          login,
-          status: 200
-        });
-      })
-      .catch(err => {
-        console.log('err is ', err);
-        next(err);
-      });
-  });
-
-  app.post('/api/cookieCheck', jsonParser, (req, res, next) => {
-    let {login} = req.body;
-
-    findUser(login)
-      .then((isUserExist) => {
-        res.status(200).send({
-          message: isUserExist ? 'authorized': 'notAuthorized',
-          login: isUserExist ? login : null, 
-          status: 200
-        });
       })
       .catch(err => {
         console.log('err is ', err);
@@ -93,7 +96,7 @@ module.exports = (app) => {
       })
   });
 
-  app.get('/api/chatMessages', (req, res, next) => {
+  app.get('/api/chatMessages', auth.required, (req, res, next) => {
     findMessages()
       .then(data => {
         let messages = data.map(({author, body, date}) => ({
@@ -129,7 +132,8 @@ module.exports = (app) => {
               .populate('author')
               .exec((err, authorData) => {
                 if (err) reject(err);
-                resolve({articleData: article, login: authorData.author.login});
+                console.log('authorData is ', authorData);
+                resolve({articleData: article, login: authorData.author.username});
               });
           });
           promisesArr = [...promisesArr, promise];
@@ -159,7 +163,7 @@ module.exports = (app) => {
       })
   });
 
-  app.post('/api/createArticle', jsonParser, (req, res, next) => {
+  app.post('/api/createArticle', auth.required, (req, res, next) => {
     let {
       title,
       descr,

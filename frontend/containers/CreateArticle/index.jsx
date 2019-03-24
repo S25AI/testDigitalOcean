@@ -18,7 +18,6 @@ class CreateArticle extends Component {
 
   _handleSubmit = (e) => {
     e.preventDefault();
-    console.log('in _handleSubmit: ', {...this.state});
     this.props.sendRequest({...this.state});
   }
 
@@ -41,44 +40,46 @@ class CreateArticle extends Component {
 
     return (
       <div className="article-create">
-        <form onSubmit={this._handleSubmit}>
-          <fieldset>
-            <legend>Создание новой статьи</legend>
-            <Input
-              value={title}
-              name='title'
-              placeholder='Название статьи'
-              onChange={this._handleChange}
-              autoFocus
-              required
-            /><br /><br />
-            <Input
-              value={descr}
-              name='descr'
-              placeholder='Краткое описание статьи'
-              onChange={this._handleChange} 
-              required
-            /><br /><br />
-            <TextArea
-              value={body}
-              name='body'
-              placeholder='Тело статьи'
-              onChange={this._handleChange}
-              required
-            /><br /><br />
-            <b>Укажите категорию статьи: </b> 
-            <Select
-              value={category}
-              name='category'
-              onChange={this._handleChange}
-              options={['movies', 'politics', 'economics', 'cooking', 'other']}
-            /><br /><br />
-            <Input value='submit' type='submit' />
-          </fieldset>
-        </form>
-        <br /><br />
-        {isShowSuccessMessage && <span style={{color: 'green'}}>Статья успешно создана</span>}
-        {isShowErrorMessage && <span style={{color: 'darkred'}}>Что-то пошло не так, попробуйте повторить операцию заново</span>}
+        <div className='wrapper'>
+          <form onSubmit={this._handleSubmit}>
+            <fieldset>
+              <legend>Создание новой статьи</legend>
+              <Input
+                value={title}
+                name='title'
+                placeholder='Название статьи'
+                onChange={this._handleChange}
+                autoFocus
+                required
+              /><br /><br />
+              <Input
+                value={descr}
+                name='descr'
+                placeholder='Краткое описание статьи'
+                onChange={this._handleChange} 
+                required
+              /><br /><br />
+              <TextArea
+                value={body}
+                name='body'
+                placeholder='Тело статьи'
+                onChange={this._handleChange}
+                required
+              /><br /><br />
+              <b>Укажите категорию статьи: </b> 
+              <Select
+                value={category}
+                name='category'
+                onChange={this._handleChange}
+                options={['movies', 'politics', 'economics', 'cooking', 'other']}
+              /><br /><br />
+              <Input value='submit' type='submit' />
+            </fieldset>
+          </form>
+          <br /><br />
+          {isShowSuccessMessage && <span style={{color: 'green'}}>Статья успешно создана</span>}
+          {isShowErrorMessage && <span style={{color: 'darkred'}}>Что-то пошло не так, попробуйте повторить операцию заново</span>}
+        </div>
       </div>
     );
   }
