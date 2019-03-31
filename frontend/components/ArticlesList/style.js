@@ -51,18 +51,27 @@ export const articlesListItem = css`
 export const articleTitle = css`
   font-size: 24px;
   font-weight: bold;
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
+  padding-right: 100px;
 `;
 
 export const articleDescr = css`
   font-size: 14px;
   margin-top: 12px;
-  color: ${colors.primary}
+  color: ${colors.primary};
+  text-overflow: ellipsis;
+  white-space: pre;
+  overflow: hidden;
 `;
 
 export const articleBody = css`
   font-size: 16px;
   margin-top: 16px;
   line-height: 1.4;
+  max-height: 200px;
+  overflow: hidden;
 `;
 
 export const articleCategory = css`
