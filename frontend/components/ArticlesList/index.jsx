@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import dayjs from 'dayjs';
 
 import {
@@ -14,6 +15,7 @@ import {
 
 function ArticlesList({items}) {
   if (!items) return null;
+
   return (
     <>
       <h2 className={title}>Список статей: </h2>
@@ -21,13 +23,15 @@ function ArticlesList({items}) {
       {
         items.map(({title, descr, body, category, date, login}, index) => (
           <li className={articlesListItem} key={index.toString()}>
-            <div className={articleTitle}>{title}</div>
-            <div className={articleDescr}>{descr}</div>
-            <div className={articleBody}>{body}</div>
-            <div className={articleCategory}>{category}</div>
-            {/* <div>created at: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</div> */}
-            <div className={articleCreator}>created by {login}</div>
-            <br />
+            <Link to={`/articles/${title}`}>
+              <div className={articleTitle}>{title}</div>
+              <div className={articleDescr}>{descr}</div>
+              <div className={articleBody}>{body}</div>
+              <div className={articleCategory}>{category}</div>
+              {/* <div>created at: {dayjs(date).format('YYYY-MM-DDTHH:mm:ss')}</div> */}
+              <div className={articleCreator}>created by {login}</div>
+              <br />
+            </Link>
           </li>
         ))
       }

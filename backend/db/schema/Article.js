@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 exports.articleSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   descr: {
     type: String,

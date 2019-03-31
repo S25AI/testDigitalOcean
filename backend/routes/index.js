@@ -9,7 +9,8 @@ const {
   findUserById,
   saveArticle,
   findMessages,
-  getArticles
+  getArticles,
+  findOneEntity
 } = require('../db/helpers');
 
 module.exports = (app) => {
@@ -132,7 +133,6 @@ module.exports = (app) => {
               .populate('author')
               .exec((err, authorData) => {
                 if (err) reject(err);
-                console.log('authorData is ', authorData);
                 resolve({articleData: article, login: authorData.author.username});
               });
           });
@@ -162,6 +162,41 @@ module.exports = (app) => {
         next(err);
       })
   });
+
+  app.get('/api/fetchArticleById', (req, res, next) => {
+    if (!req.query.id) {
+      return res.status(400).json({message: 'incorrect request', status: 400})
+    }
+
+    let title = req.query.id;
+
+    findOneEntity('title', title, ArticleModel)
+      .then(({title, descr, body, category, author, date}) => {
+        return {title, descr, body, category, author, date};
+      })
+      .then(article => {
+        return new Promise((resolve, reject) => {
+          ArticleModel
+          .findOne({title: article.title})
+          .populate('author')
+          .exec((err, authorData) => {
+            if (err) reject(err);
+            resolve({...article, login: authorData.author.username});
+          });
+        })
+      })
+      .then(data => {
+        res.status(200).json({
+          message: 'success',
+          status: 200,
+          data
+        });
+      })
+      .catch(err => {
+        console.log('err is ', err);
+        next(err);
+      });
+  })
 
   app.post('/api/createArticle', auth.required, (req, res, next) => {
     let {
