@@ -4,6 +4,15 @@ const {UserModel} = require('./models/User');
 const {MessageModel} = require('./models/Message');
 const {ArticleModel} = require('./models/Article');
 
+exports.findOneEntity = (paramName, paramValue, model) => {
+  return new Promise((resolve, reject) => {
+    model.findOne({[paramName]: paramValue}, (err, data) => {
+      if (err) reject(err);
+      resolve(data);
+    });
+  });
+};
+
 exports.findUser = (username) => {
   return new Promise((resolve, reject) => {
     UserModel.findOne({username}, (err, user) => {
